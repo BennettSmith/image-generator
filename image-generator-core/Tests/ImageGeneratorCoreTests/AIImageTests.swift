@@ -1,6 +1,7 @@
+
 import Foundation
 import Testing
-@testable import AIImage
+import ImageGeneratorCore
 
 @Test func creatingAIImageSucceeds() throws {
     _ = try AIImage(id: .newAIImageId(), prompt: "Orange cat on a magic carpet.", whenGenerated: .now, content: Data())

@@ -1,6 +1,6 @@
 
 import Testing
-@testable import AIImage
+import ImageGeneratorCore
 
 @Test func creatingIdFromInvalidStringThrowsError() {
     #expect(throws: AIImageIdError.invalidValue) {
