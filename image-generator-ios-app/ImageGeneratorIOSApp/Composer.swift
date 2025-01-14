@@ -1,6 +1,6 @@
 import Foundation
 
-import ImageGenerator
+import ImageGeneratorUseCases
 import ImageGeneratorInteractors
 import ImageGeneratorRepositories
 
@@ -18,8 +18,8 @@ struct ProductionComposer: ImageGeneratorFactory {
     // Repositories
     let imageRepository: InMemoryAIImageRepository
     
-    init() {
-        self.openAiClient = OpenAIClient(apiKey: "<API-KEY-GOES-HERE> ")
+    init(openAiAPIKey: String = "<missing-key>") {
+        self.openAiClient = OpenAIClient(apiKey: openAiAPIKey)
         self.imageRepository = InMemoryAIImageRepository()
     }
     
@@ -32,13 +32,13 @@ struct ProductionComposer: ImageGeneratorFactory {
         }, saveImage: { image in
             try await imageRepository.save(image: image)
         })
-        return GenerateImageInteractor(gateway: gateway)
+        return GenerateImageInteractor(gateway: gateway) as GenerateImageUseCase
     }
     
     func makeViewImageUseCase() -> any ViewImageUseCase {
         let gateway = ViewImageInteractor.Gateway(loadImage: { image in
             try await imageRepository.load(image: image)
         })
-        return ViewImageInteractor(gateway: gateway)
+        return ViewImageInteractor(gateway: gateway) as ViewImageUseCase
     }
 }

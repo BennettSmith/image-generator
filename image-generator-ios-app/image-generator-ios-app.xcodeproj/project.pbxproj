@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		4851FDD42D35E9DD00B0CD0C /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 48A945A22D31FEFB004CD937 /* OpenAIClient */; };
 		4851FDD62D35E9DD00B0CD0C /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 48462D552D339A58008AA1CF /* OpenAIClient */; };
-		487E597D2D344C2F005407B6 /* ImageGenerator in Frameworks */ = {isa = PBXBuildFile; productRef = 487E597C2D344C2F005407B6 /* ImageGenerator */; };
 		487E597F2D344C2F005407B6 /* ImageGeneratorInteractors in Frameworks */ = {isa = PBXBuildFile; productRef = 487E597E2D344C2F005407B6 /* ImageGeneratorInteractors */; };
 		487E59832D344E22005407B6 /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 487E59822D344E22005407B6 /* OpenAIClient */; };
 		487E59862D344E4D005407B6 /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 487E59852D344E4D005407B6 /* OpenAIClient */; };
+		48EC66122D37141E0009BFF7 /* ImageGeneratorUseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 48EC66112D37141E0009BFF7 /* ImageGeneratorUseCases */; };
 		48EFDF912D34456800B22F86 /* ImageGeneratorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 48EFDF902D34456800B22F86 /* ImageGeneratorCore */; };
 		48EFDF932D34456800B22F86 /* ImageGeneratorRepositories in Frameworks */ = {isa = PBXBuildFile; productRef = 48EFDF922D34456800B22F86 /* ImageGeneratorRepositories */; };
 /* End PBXBuildFile section */
@@ -68,10 +68,10 @@
 				4851FDD42D35E9DD00B0CD0C /* OpenAIClient in Frameworks */,
 				48EFDF932D34456800B22F86 /* ImageGeneratorRepositories in Frameworks */,
 				487E59862D344E4D005407B6 /* OpenAIClient in Frameworks */,
+				48EC66122D37141E0009BFF7 /* ImageGeneratorUseCases in Frameworks */,
 				487E59832D344E22005407B6 /* OpenAIClient in Frameworks */,
 				487E597F2D344C2F005407B6 /* ImageGeneratorInteractors in Frameworks */,
 				48EFDF912D34456800B22F86 /* ImageGeneratorCore in Frameworks */,
-				487E597D2D344C2F005407B6 /* ImageGenerator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +128,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 48A945952D31FE3D004CD937 /* Build configuration list for PBXNativeTarget "ImageGeneratorIOSApp" */;
 			buildPhases = (
+				4804008E2D37180100FCE150 /* Generate RuntimeConfig.swift */,
 				48A9456D2D31FE3C004CD937 /* Sources */,
 				48A9456E2D31FE3C004CD937 /* Frameworks */,
 				48A9456F2D31FE3C004CD937 /* Resources */,
@@ -135,6 +136,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				480400912D371CD200FCE150 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				48A945732D31FE3C004CD937 /* ImageGeneratorIOSApp */,
@@ -145,10 +147,10 @@
 				48462D552D339A58008AA1CF /* OpenAIClient */,
 				48EFDF902D34456800B22F86 /* ImageGeneratorCore */,
 				48EFDF922D34456800B22F86 /* ImageGeneratorRepositories */,
-				487E597C2D344C2F005407B6 /* ImageGenerator */,
 				487E597E2D344C2F005407B6 /* ImageGeneratorInteractors */,
 				487E59822D344E22005407B6 /* OpenAIClient */,
 				487E59852D344E4D005407B6 /* OpenAIClient */,
+				48EC66112D37141E0009BFF7 /* ImageGeneratorUseCases */,
 			);
 			productName = "image-generator-ios-app";
 			productReference = 48A945712D31FE3C004CD937 /* ImageGeneratorIOSApp.app */;
@@ -236,6 +238,7 @@
 				48EFDF8F2D34456800B22F86 /* XCLocalSwiftPackageReference "../image-generator-core" */,
 				487E597B2D344C2F005407B6 /* XCLocalSwiftPackageReference "../image-generator-app" */,
 				487E59842D344E4D005407B6 /* XCLocalSwiftPackageReference "../open-ai-client" */,
+				4804008F2D371CB500FCE150 /* XCRemoteSwiftPackageReference "SecretsManager" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 48A945722D31FE3C004CD937 /* Products */;
@@ -273,6 +276,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4804008E2D37180100FCE150 /* Generate RuntimeConfig.swift */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate RuntimeConfig.swift";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/RuntimeConfig.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo HERE IT IS\necho $OPENAI_API_KEY\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		48A9456D2D31FE3C004CD937 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -298,6 +323,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		480400912D371CD200FCE150 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 480400902D371CD200FCE150 /* SecretsManagerPlugin */;
+		};
 		48A945832D31FE3D004CD937 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 48A945702D31FE3C004CD937 /* ImageGeneratorIOSApp */;
@@ -503,7 +532,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/image-generator-ios-app.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageGeneratorIOSApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageGeneratorIOSApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageGeneratorIOSApp";
 			};
 			name = Debug;
 		};
@@ -522,7 +551,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/image-generator-ios-app.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageGeneratorIOSApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageGeneratorIOSApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageGeneratorIOSApp";
 			};
 			name = Release;
 		};
@@ -616,14 +645,26 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		4804008F2D371CB500FCE150 /* XCRemoteSwiftPackageReference "SecretsManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vdka/SecretsManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		480400902D371CD200FCE150 /* SecretsManagerPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4804008F2D371CB500FCE150 /* XCRemoteSwiftPackageReference "SecretsManager" */;
+			productName = "plugin:SecretsManagerPlugin";
+		};
 		48462D552D339A58008AA1CF /* OpenAIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAIClient;
-		};
-		487E597C2D344C2F005407B6 /* ImageGenerator */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ImageGenerator;
 		};
 		487E597E2D344C2F005407B6 /* ImageGeneratorInteractors */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -640,6 +681,10 @@
 		48A945A22D31FEFB004CD937 /* OpenAIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAIClient;
+		};
+		48EC66112D37141E0009BFF7 /* ImageGeneratorUseCases */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ImageGeneratorUseCases;
 		};
 		48EFDF902D34456800B22F86 /* ImageGeneratorCore */ = {
 			isa = XCSwiftPackageProductDependency;

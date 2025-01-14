@@ -9,8 +9,8 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "ImageGenerator",
-            targets: ["ImageGenerator"]),
+            name: "ImageGeneratorUseCases",
+            targets: ["ImageGeneratorUseCases"]),
         .library(
             name: "ImageGeneratorInteractors",
             targets: ["ImageGeneratorInteractors"]),
@@ -22,17 +22,17 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "ImageGenerator"
+            name: "ImageGeneratorUseCases"
         ),
         .testTarget(
-            name: "ImageGeneratorTests",
-            dependencies: ["ImageGenerator"]
+            name: "ImageGeneratorUseCasesTests",
+            dependencies: ["ImageGeneratorUseCases"]
         ),
         
         .target(
             name: "ImageGeneratorInteractors",
             dependencies: [
-                "ImageGenerator",
+                "ImageGeneratorUseCases",
                 .product(name: "ImageGeneratorCore", package: "image-generator-core"),
                 .product(name: "ImageGeneratorRepositories", package: "image-generator-core"),
             ]

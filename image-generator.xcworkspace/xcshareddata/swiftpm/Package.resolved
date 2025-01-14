@@ -1,5 +1,5 @@
 {
-  "originHash" : "b62cdab4970ef0ac740f7182959fffa3c9995c86a1eef8b4d121af4f33a0884e",
+  "originHash" : "9ea9ba4adf8fa170371edc2ecac38a51d33763ecd24e2b7bb044bb33eb29c1b0",
   "pins" : [
     {
       "identity" : "openapikit",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "5b5ee49624dda5b3e3b85aff184f44a007862fb7",
         "version" : "3.3.0"
+      }
+    },
+    {
+      "identity" : "secretsmanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vdka/SecretsManager.git",
+      "state" : {
+        "revision" : "66af2ab2e88b2d68a2385734fa86c87c3236d44f",
+        "version" : "1.1.4"
       }
     },
     {

@@ -1,6 +1,6 @@
 import Foundation
 
-import ImageGenerator
+import ImageGeneratorUseCases
 import ImageGeneratorCore
 
 public class ViewImageInteractor: ViewImageUseCase {
