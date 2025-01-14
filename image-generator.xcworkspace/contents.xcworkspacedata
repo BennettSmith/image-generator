@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:notes.txt">
+   </FileRef>
+   <FileRef
+      location = "group:image-generator-app">
+   </FileRef>
+   <FileRef
+      location = "group:image-generator-core">
+   </FileRef>
+   <FileRef
+      location = "group:image-generator-ios-app/image-generator-ios-app.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:open-ai-client">
+   </FileRef>
+</Workspace>

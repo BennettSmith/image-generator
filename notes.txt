@@ -1,0 +1,52 @@
+
+# Use Cases
+
+## Generate an image using a short prompt.
+
+## View an AI generated image.
+
+## Favorite a generated image.
+
+## Unfavorite a generated image.
+
+## View a list of favorited images.
+
+##
+
+
+- View a list of previously generated images and associated prompts.
+- Delete an image and associated prompt from the list.
+- Clear the list (delete everything).
+
+# Domain 
+
+- Image Metadata (prompt, path to image, when generated)
+- Image Content (1024x1024 image bits)
+
+Repository that manages the history of prompts and their generated image paths.
+Repository that stores the actual generated images.
+
+Service to generate images. (OpenAIClient Swift Package)
+
+// What is aggregate roots here?
+
+// Rules
+// - Reference other aggregates by id
+// - Changes are commited & rolled back as a whole
+// - Changes to an aggregate are done via the root
+
+
+// Prefer smaller aggregates (reduce amount of data to read/write in tx.)
+
+
+// Aggregate modeling steps
+// - Define each of the entities is an aggregate
+// - Merge aggregates to enforce invariants
+// - Merge aggregates that cannot tolerate eventual consistancy
+
+// Domain events used to keep changes across aggregates consistent (eventually).
+// Probably not used very often.
+
+// - Does the entity make sense without the other?
+// - Will it need to be looked up?
+// - Will it be referenced by other aggregates?
