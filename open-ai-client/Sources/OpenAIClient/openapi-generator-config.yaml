@@ -3,3 +3,6 @@ generate:
     - client
 namingStrategy: idiomatic
 
+filter:
+    tags:
+        - Images
