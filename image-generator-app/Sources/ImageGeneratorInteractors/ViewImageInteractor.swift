@@ -6,9 +6,9 @@ import ImageGeneratorCore
 public class ViewImageInteractor: ViewImageUseCase {
     
     public struct Gateway {
-        let loadImage: (_ image: AIImageId) async throws -> AIImage
+        let loadImage: (_ image: GeneratedImageId) async throws -> GeneratedImage
         
-        public init(loadImage: @escaping (_: AIImageId) async throws -> AIImage) {
+        public init(loadImage: @escaping (_: GeneratedImageId) async throws -> GeneratedImage) {
             self.loadImage = loadImage
         }
     }
@@ -21,7 +21,7 @@ public class ViewImageInteractor: ViewImageUseCase {
     
     public func execute(imageId: String, presenter: any ViewImagePresenter) async {
         do {
-            let imageId = try AIImageId.createAIImageId(for: imageId)
+            let imageId = try GeneratedImageId.createAIImageId(for: imageId)
             presenter.isLoadingImage()
             let image = try await gateway.loadImage(imageId)
             presenter.onImageLoaded(image: image.content)

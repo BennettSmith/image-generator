@@ -5,7 +5,7 @@ public enum AIImageIdError: Error {
     case invalidValue
 }
 
-public struct AIImageId: Equatable, Hashable {
+public struct GeneratedImageId: Equatable, Hashable {
     private typealias ValueType = UUID
     private typealias Validator = (UUID) throws -> Void
     private let value: ValueType
@@ -14,19 +14,19 @@ public struct AIImageId: Equatable, Hashable {
         self.value = value
     }
     
-    public static func createAIImageId(for value: String) throws -> AIImageId {
+    public static func createAIImageId(for value: String) throws -> GeneratedImageId {
         guard let value = UUID(uuidString: value) else {
             throw AIImageIdError.invalidValue
         }
-        return try AIImageId(value)
+        return try GeneratedImageId(value)
     }
     
-    public static func newAIImageId() throws -> AIImageId {
-        try AIImageId(UUID())
+    public static func newAIImageId() throws -> GeneratedImageId {
+        try GeneratedImageId(UUID())
     }
 }
 
-extension AIImageId: CustomStringConvertible {
+extension GeneratedImageId: CustomStringConvertible {
     public var description: String {
         return value.uuidString
     }

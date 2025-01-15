@@ -2,14 +2,14 @@
 import Foundation
 import ImageGeneratorCore
 
-public class InMemoryAIImageRepository {
-    private var images: [AIImageId: AIImage] = [:]
+public class InMemoryGeneratedImageRepository {
+    private var images: [GeneratedImageId: GeneratedImage] = [:]
     
     public init() {}
 }
 
-extension InMemoryAIImageRepository: AIImageRepository {
-    public func delete(image: AIImageId) async throws {
+extension InMemoryGeneratedImageRepository: GeneratedImageRepository {
+    public func delete(image: GeneratedImageId) async throws {
         guard let _ = images.removeValue(forKey: image) else {
             throw AIImageRepositoryError.notFound
         }
@@ -19,7 +19,7 @@ extension InMemoryAIImageRepository: AIImageRepository {
         images.removeAll()
     }
     
-    public func load(image: AIImageId) async throws -> AIImage {
+    public func load(image: GeneratedImageId) async throws -> GeneratedImage {
         if let image = images[image] {
             return image
         } else {
@@ -27,11 +27,11 @@ extension InMemoryAIImageRepository: AIImageRepository {
         }
     }
     
-    public func loadAll() async throws -> [AIImage] {
+    public func loadAll() async throws -> [GeneratedImage] {
         images.values.map { image in image }
     }
     
-    public func save(image: AIImage) async throws {
+    public func save(image: GeneratedImage) async throws {
         images[image.id] = image
     }
 }

@@ -8,9 +8,9 @@ public class GenerateImageInteractor: GenerateImageUseCase {
     public struct Gateway {
         let generateImage: (_ prompt: String) async throws -> URL
         let downloadImage: (_ from: URL) async throws -> Data
-        let saveImage: (_ image: AIImage) async throws -> Void
+        let saveImage: (_ image: GeneratedImage) async throws -> Void
         
-        public init(generateImage: @escaping (_: String) async throws -> URL, downloadImage: @escaping (_: URL) async throws -> Data, saveImage: @escaping (_: AIImage) async throws -> Void) {
+        public init(generateImage: @escaping (_: String) async throws -> URL, downloadImage: @escaping (_: URL) async throws -> Data, saveImage: @escaping (_: GeneratedImage) async throws -> Void) {
             self.generateImage = generateImage
             self.downloadImage = downloadImage
             self.saveImage = saveImage
@@ -31,8 +31,8 @@ public class GenerateImageInteractor: GenerateImageUseCase {
             presenter.isDownloadingImage()
             let imageData = try await gateway.downloadImage(remoteImageUrl)
             
-            let imageId = try AIImageId.newAIImageId()
-            let image = AIImage(id: imageId, prompt: prompt, whenGenerated: .now, content: imageData)
+            let imageId = try GeneratedImageId.newAIImageId()
+            let image = GeneratedImage(id: imageId, prompt: prompt, whenGenerated: .now, content: imageData)
             try await gateway.saveImage(image)
             
             presenter.onImageGenerated(imageId: String(describing: imageId))

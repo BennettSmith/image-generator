@@ -9,11 +9,11 @@ struct ProductionComposer: ImageGeneratorFactory {
     let openAiClient: OpenAIClient
     
     // Repositories
-    let imageRepository: InMemoryAIImageRepository
+    let imageRepository: InMemoryGeneratedImageRepository
     
     init(openAiAPIKey: String = "<missing-key>") {
         self.openAiClient = OpenAIClient(apiKey: openAiAPIKey)
-        self.imageRepository = InMemoryAIImageRepository()
+        self.imageRepository = InMemoryGeneratedImageRepository()
     }
     
     func makeGenerateImageUseCase() -> any GenerateImageUseCase {
