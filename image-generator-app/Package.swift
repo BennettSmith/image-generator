@@ -8,35 +8,22 @@ let package = Package(
     platforms: [.macOS(.v12), .iOS(.v15)],
     products: [
         .library(
-            name: "ImageGeneratorUseCases",
-            targets: ["ImageGeneratorUseCases"]),
-        .library(
-            name: "ImageGeneratorInteractors",
-            targets: ["ImageGeneratorInteractors"]),
+            name: "ImageGeneratorApp",
+            targets: ["ImageGeneratorApp"]),
     ],
     dependencies: [
         .package(path: "../image-generator-core"),
     ],
     targets: [
         .target(
-            name: "ImageGeneratorUseCases"
-        ),
-        .testTarget(
-            name: "ImageGeneratorUseCasesTests",
-            dependencies: ["ImageGeneratorUseCases"]
-        ),
-        
-        .target(
-            name: "ImageGeneratorInteractors",
+            name: "ImageGeneratorApp",
             dependencies: [
-                "ImageGeneratorUseCases",
                 .product(name: "ImageGeneratorCore", package: "image-generator-core"),
-                .product(name: "ImageGeneratorRepositories", package: "image-generator-core"),
             ]
         ),
         .testTarget(
-            name: "ImageGeneratorInteractorsTests",
-            dependencies: ["ImageGeneratorInteractors"]
+            name: "ImageGeneratorAppTests",
+            dependencies: ["ImageGeneratorApp"]
         ),
     ]
 )

@@ -9,10 +9,9 @@
 /* Begin PBXBuildFile section */
 		4851FDD42D35E9DD00B0CD0C /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 48A945A22D31FEFB004CD937 /* OpenAIClient */; };
 		4851FDD62D35E9DD00B0CD0C /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 48462D552D339A58008AA1CF /* OpenAIClient */; };
-		487E597F2D344C2F005407B6 /* ImageGeneratorInteractors in Frameworks */ = {isa = PBXBuildFile; productRef = 487E597E2D344C2F005407B6 /* ImageGeneratorInteractors */; };
+		486196552D3D823900969213 /* ImageGeneratorApp in Frameworks */ = {isa = PBXBuildFile; productRef = 486196542D3D823900969213 /* ImageGeneratorApp */; };
 		487E59832D344E22005407B6 /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 487E59822D344E22005407B6 /* OpenAIClient */; };
 		487E59862D344E4D005407B6 /* OpenAIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 487E59852D344E4D005407B6 /* OpenAIClient */; };
-		48EC66122D37141E0009BFF7 /* ImageGeneratorUseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 48EC66112D37141E0009BFF7 /* ImageGeneratorUseCases */; };
 		48EFDF912D34456800B22F86 /* ImageGeneratorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 48EFDF902D34456800B22F86 /* ImageGeneratorCore */; };
 		48EFDF932D34456800B22F86 /* ImageGeneratorRepositories in Frameworks */ = {isa = PBXBuildFile; productRef = 48EFDF922D34456800B22F86 /* ImageGeneratorRepositories */; };
 /* End PBXBuildFile section */
@@ -66,11 +65,10 @@
 			files = (
 				4851FDD62D35E9DD00B0CD0C /* OpenAIClient in Frameworks */,
 				4851FDD42D35E9DD00B0CD0C /* OpenAIClient in Frameworks */,
+				486196552D3D823900969213 /* ImageGeneratorApp in Frameworks */,
 				48EFDF932D34456800B22F86 /* ImageGeneratorRepositories in Frameworks */,
 				487E59862D344E4D005407B6 /* OpenAIClient in Frameworks */,
-				48EC66122D37141E0009BFF7 /* ImageGeneratorUseCases in Frameworks */,
 				487E59832D344E22005407B6 /* OpenAIClient in Frameworks */,
-				487E597F2D344C2F005407B6 /* ImageGeneratorInteractors in Frameworks */,
 				48EFDF912D34456800B22F86 /* ImageGeneratorCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,10 +145,9 @@
 				48462D552D339A58008AA1CF /* OpenAIClient */,
 				48EFDF902D34456800B22F86 /* ImageGeneratorCore */,
 				48EFDF922D34456800B22F86 /* ImageGeneratorRepositories */,
-				487E597E2D344C2F005407B6 /* ImageGeneratorInteractors */,
 				487E59822D344E22005407B6 /* OpenAIClient */,
 				487E59852D344E4D005407B6 /* OpenAIClient */,
-				48EC66112D37141E0009BFF7 /* ImageGeneratorUseCases */,
+				486196542D3D823900969213 /* ImageGeneratorApp */,
 			);
 			productName = "image-generator-ios-app";
 			productReference = 48A945712D31FE3C004CD937 /* ImageGeneratorIOSApp.app */;
@@ -666,9 +663,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAIClient;
 		};
-		487E597E2D344C2F005407B6 /* ImageGeneratorInteractors */ = {
+		486196542D3D823900969213 /* ImageGeneratorApp */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = ImageGeneratorInteractors;
+			productName = ImageGeneratorApp;
 		};
 		487E59822D344E22005407B6 /* OpenAIClient */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -681,10 +678,6 @@
 		48A945A22D31FEFB004CD937 /* OpenAIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAIClient;
-		};
-		48EC66112D37141E0009BFF7 /* ImageGeneratorUseCases */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ImageGeneratorUseCases;
 		};
 		48EFDF902D34456800B22F86 /* ImageGeneratorCore */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-import ImageGeneratorUseCases
+import ImageGeneratorApp
 
 struct ContentView: View {
     
