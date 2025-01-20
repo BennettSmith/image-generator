@@ -1,8 +1,8 @@
 
 public protocol UseCase {
-    associatedtype Request
-    associatedtype Response
+    associatedtype Request: Sendable
+    associatedtype Response: Sendable
     associatedtype Presenter
     
-    func execute(request: Request, presenter: Presenter) async -> Response
+    func execute(request: Request, presenter: Presenter) async -> Result<Response, Error>
 }

@@ -1,6 +1,5 @@
 import Foundation
 import ImageGeneratorCore
-import os.log
 
 /// Generate Image
 ///
@@ -19,26 +18,28 @@ public struct GenerateImage: UseCase {
         self.gateway = gateway
     }
     
-    public func execute(request: Request, presenter: Presenter) async -> Response {
+    public func execute(request: Request, presenter: Presenter) async -> Result<Response, Error> {
         do {
-            presenter.isGeneratingImage()
+            presenter.onRequestImageGeneration()
             let remoteImageUrl = try await gateway.generateImage(request.prompt)
             
-            presenter.isDownloadingImage()
+            presenter.onRequestImageDownload()
             let imageData = try await gateway.downloadImage(remoteImageUrl)
             
             let imageId = try GeneratedImageId.newAIImageId()
             let image = GeneratedImage(id: imageId, prompt: request.prompt, whenGenerated: .now, content: imageData)
             try await gateway.saveImage(image)
             
-            presenter.onImageGenerated(imageId: String(describing: imageId))
+            presenter.onPresentImage(imageId: String(describing: imageId), image: imageData)
+            return .success(Response())
         } catch {
             presenter.onError(error: error)
+            return .failure(error)
         }
     }
 }
 
-public struct GenerateImageRequest {
+public struct GenerateImageRequest: Sendable {
     let prompt: String
     
     public init(prompt: String) {
@@ -47,9 +48,9 @@ public struct GenerateImageRequest {
 }
 
 public protocol GenerateImagePresenter {
-    func isGeneratingImage()
-    func isDownloadingImage()
-    func onImageGenerated(imageId: String)
+    func onRequestImageGeneration()
+    func onRequestImageDownload()
+    func onPresentImage(imageId: String, image: Data)
     func onError(error: Error)
 }
 
@@ -59,22 +60,3 @@ public protocol GenerateImageGateway {
     func saveImage(_ image: GeneratedImage) async throws -> Void
 }
 
-private struct LoggingPresenter: GenerateImagePresenter {
-    let logger: Logger = Logger(subsystem: "image-generator-app", category: "Presenter")
-    
-    func isGeneratingImage() {
-        logger.debug(">>> Generating image...")
-    }
-    
-    func isDownloadingImage() {
-        logger.debug(">>> Downloading image...")
-    }
-    
-    func onImageGenerated(imageId: String) {
-        logger.debug(">>> Image generated: \(imageId)")
-    }
-    
-    func onError(error: any Error) {
-        logger.error(">>> Error: \(error)")
-    }
-}

@@ -9,8 +9,8 @@ import os.log
 /// not be viewed.
 public struct ViewImage: UseCase {
     public typealias Request = ViewImageRequest
-    public typealias Response = Void
-    public typealias Presenter = ViewImagePresenter
+    public typealias Response = ViewImageResponse
+    public typealias Presenter = Void
     
     private let gateway: ViewImageGateway
     
@@ -18,29 +18,36 @@ public struct ViewImage: UseCase {
         self.gateway = gateway
     }
     
-    public func execute(request: Request, presenter: Presenter) async -> Response {
+    public func execute(request: Request, presenter: Presenter = Presenter()) async -> Result<Response, Error> {
         do {
             let imageId = try GeneratedImageId.createAIImageId(for: request.imageId)
-            presenter.isLoadingImage()
             let image = try await gateway.loadImage(imageId)
-            presenter.onImageLoaded(image: image.content)
+            return .success(Response(imageId: imageId.description, image: image.content))
         } catch {
-            presenter.onError(error: error)
+            return .failure(error)
         }
     }
 }
 
-public struct ViewImageRequest {
-    let imageId: String
-    
+public struct ViewImageRequest: Sendable {
+    public let imageId: String
     public init(imageId: String) {
         self.imageId = imageId
     }
 }
 
+public struct ViewImageResponse: Sendable {
+    public let imageId: String
+    public let image: Data
+    public init(imageId: String, image: Data) {
+        self.imageId = imageId
+        self.image = image
+    }
+}
+
 public protocol ViewImagePresenter  {
-    func isLoadingImage()
-    func onImageLoaded(image: Data)
+    func onLoadImage(imageId: String)
+    func onPresentImage(imageId: String, image: Data)
     func onError(error: Error)
 }
 
@@ -48,18 +55,3 @@ public protocol ViewImageGateway {
     func loadImage(_ image: GeneratedImageId) async throws -> GeneratedImage
 }
 
-private struct LoggingPresenter: ViewImagePresenter {
-    let logger: Logger = Logger(subsystem: "image-generator-app", category: "Presenter")
-
-    func isLoadingImage() {
-        logger.debug(">>> Loading image...")
-    }
-    
-    func onImageLoaded(image: Data) {
-        logger.debug(">>> Image loaded: (\(image.count) bytes)")
-    }
-    
-    func onError(error: any Error) {
-        logger.error(">>> Error: \(error)")
-    }
-}
