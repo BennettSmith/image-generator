@@ -1,47 +1,34 @@
 import Foundation
 import ImageGeneratorCore
+import os.log
 
 /// Generate Image
 ///
 /// Requests an AI image generator to produce an image based on a prompt. The generated
 /// image is stored locally. On success you will receive the image identfier as well as the location
 /// of the image content. On failure you will receive an error.
-public protocol GenerateImageUseCase {
-    func execute(prompt: String, presenter: GenerateImagePresenter) async
-}
-
-/// Presenter for GenerateImage use case
-public protocol GenerateImagePresenter {
-    /// Called when the use case makes the request to generate the image.
-    func isGeneratingImage()
+public struct GenerateImage: UseCase {
     
-    /// Called when the use case downloads the generated image from the AI image generator's cloud.
-    func isDownloadingImage()
+    public typealias Request = GenerateImageRequest
+    public typealias Response = Void
+    public typealias Presenter = GenerateImagePresenter
     
-    /// Called when the image is available to display.
-    func onImageGenerated(imageId: String)
-    
-    /// Called if there is an execution error.
-    func onError(error: Error)
-}
-
-public final class GenerateImageInteractor: GenerateImageUseCase {
     private let gateway: GenerateImageGateway
     
     public init(gateway: GenerateImageGateway) {
         self.gateway = gateway
     }
-
-    public func execute(prompt: String, presenter: any GenerateImagePresenter) async {
+    
+    public func execute(request: Request, presenter: Presenter) async -> Response {
         do {
             presenter.isGeneratingImage()
-            let remoteImageUrl = try await gateway.generateImage(prompt)
+            let remoteImageUrl = try await gateway.generateImage(request.prompt)
             
             presenter.isDownloadingImage()
             let imageData = try await gateway.downloadImage(remoteImageUrl)
             
             let imageId = try GeneratedImageId.newAIImageId()
-            let image = GeneratedImage(id: imageId, prompt: prompt, whenGenerated: .now, content: imageData)
+            let image = GeneratedImage(id: imageId, prompt: request.prompt, whenGenerated: .now, content: imageData)
             try await gateway.saveImage(image)
             
             presenter.onImageGenerated(imageId: String(describing: imageId))
@@ -51,8 +38,43 @@ public final class GenerateImageInteractor: GenerateImageUseCase {
     }
 }
 
+public struct GenerateImageRequest {
+    let prompt: String
+    
+    public init(prompt: String) {
+        self.prompt = prompt
+    }
+}
+
+public protocol GenerateImagePresenter {
+    func isGeneratingImage()
+    func isDownloadingImage()
+    func onImageGenerated(imageId: String)
+    func onError(error: Error)
+}
+
 public protocol GenerateImageGateway {
     func generateImage(_ prompt: String) async throws -> URL
     func downloadImage(_ from: URL) async throws -> Data
     func saveImage(_ image: GeneratedImage) async throws -> Void
+}
+
+private struct LoggingPresenter: GenerateImagePresenter {
+    let logger: Logger = Logger(subsystem: "image-generator-app", category: "Presenter")
+    
+    func isGeneratingImage() {
+        logger.debug(">>> Generating image...")
+    }
+    
+    func isDownloadingImage() {
+        logger.debug(">>> Downloading image...")
+    }
+    
+    func onImageGenerated(imageId: String) {
+        logger.debug(">>> Image generated: \(imageId)")
+    }
+    
+    func onError(error: any Error) {
+        logger.error(">>> Error: \(error)")
+    }
 }

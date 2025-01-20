@@ -1,6 +1,6 @@
 import ImageGeneratorApp
 
 protocol ImageGeneratorFactory {
-    func makeGenerateImageUseCase() -> GenerateImageUseCase
-    func makeViewImageUseCase() -> ViewImageUseCase
+    func makeGenerateImageUseCase() -> GenerateImage
+    func makeViewImageUseCase() -> ViewImage
 }

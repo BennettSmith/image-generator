@@ -16,12 +16,12 @@ struct ProductionComposer: ImageGeneratorFactory {
         self.imageRepository = InMemoryGeneratedImageRepository()
     }
     
-    func makeGenerateImageUseCase() -> any GenerateImageUseCase {
-        return GenerateImageInteractor(gateway: self) as GenerateImageUseCase
+    func makeGenerateImageUseCase() -> GenerateImage {
+        return GenerateImage(gateway: self)
     }
     
-    func makeViewImageUseCase() -> any ViewImageUseCase {
-        return ViewImageInteractor(gateway: self) as ViewImageUseCase
+    func makeViewImageUseCase() -> ViewImage {
+        return ViewImage(gateway: self)
     }
 }
 

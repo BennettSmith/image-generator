@@ -11,24 +11,77 @@ struct ContentView: View {
         case success(Image)
         case failure(String)
     }
-    
-    @State var fetchPhase: FetchPhase = .initial
-    @State var prompt: String = ""
-    
-    let factory: ImageGeneratorFactory
-    
-    private let generateImageUseCase: GenerateImageUseCase
-    private let viewImageUseCase: ViewImageUseCase
-    
+
+    @Observable
+    final class ViewModel: GenerateImagePresenter, ViewImagePresenter {
+        var generateImageUseCase: GenerateImage
+        var viewImageUseCase: ViewImage
+        var fetchPhase: FetchPhase
+        var prompt: String
+
+        init(factory: ImageGeneratorFactory, fetchPhase: FetchPhase, prompt: String) {
+            self.generateImageUseCase = factory.makeGenerateImageUseCase()
+            self.viewImageUseCase = factory.makeViewImageUseCase()
+            self.fetchPhase = fetchPhase
+            self.prompt = prompt
+        }
+        
+        var disablePromptEntry: Bool {
+            fetchPhase == .loading
+        }
+        
+        var disableImageGeneration: Bool {
+            fetchPhase == .loading || prompt.isEmpty
+        }
+        
+        func generateImage() {
+            Task {
+                let request = GenerateImage.Request(prompt: prompt)
+                await generateImageUseCase.execute(request: request, presenter: self)
+            }
+        }
+        
+        func isGeneratingImage() {
+            fetchPhase = .loading
+        }
+        
+        func isDownloadingImage() {
+            fetchPhase = .loading
+        }
+        
+        func onImageGenerated(imageId: String) {
+            Task {
+                let request = ViewImage.Request(imageId: imageId)
+                await viewImageUseCase.execute(request: request, presenter: self)
+            }
+        }
+        
+        func onError(error: any Error) {
+            fetchPhase = .failure(error.localizedDescription)
+        }
+        
+        func isLoadingImage() {
+            fetchPhase = .loading
+        }
+        
+        func onImageLoaded(image: Data) {
+            guard let image = UIImage(data: image) else {
+                self.fetchPhase = .failure("Failed to download image")
+                return
+            }
+            self.fetchPhase = .success(Image(uiImage: image))
+        }
+    }
+
+    @State private var viewModel: ViewModel
+
     init(factory: ImageGeneratorFactory) {
-        self.factory = factory
-        self.generateImageUseCase = factory.makeGenerateImageUseCase()
-        self.viewImageUseCase = factory.makeViewImageUseCase()
+        self.viewModel = ViewModel(factory: factory, fetchPhase: .initial, prompt: "")
     }
 
     var body: some View {
         VStack(spacing: 16) {
-            switch fetchPhase {
+            switch viewModel.fetchPhase {
             case .loading: ProgressView("Requesting an AI image")
             case .success(let image):
                 image.resizable().scaledToFit()
@@ -38,55 +91,19 @@ struct ContentView: View {
                 EmptyView()
             }
             
-            TextField("Enter prompt", text: $prompt, prompt: Text("Enter prompt"), axis: .vertical)
+            TextField("Enter prompt", text: $viewModel.prompt, prompt: Text("Enter prompt"), axis: .vertical)
                 .autocorrectionDisabled()
                 .textFieldStyle(.roundedBorder)
-                .disabled(fetchPhase == .loading)
+                .disabled(viewModel.disablePromptEntry)
             
             Button("Generate Image") {
-                Task {
-                    await generateImageUseCase.execute(prompt: prompt, presenter: self)
-                }
+                viewModel.generateImage()
             }
             .buttonStyle(.borderedProminent)
-            .disabled(fetchPhase == .loading || prompt.isEmpty)
+            .disabled(viewModel.disableImageGeneration)
         }
         .padding()
         .navigationTitle(Text("Clean Image Generator"))
-    }
-}
-
-extension ContentView: GenerateImagePresenter {
-    func isGeneratingImage() {
-        fetchPhase = .loading
-    }
-    
-    func isDownloadingImage() {
-        fetchPhase = .loading
-    }
-    
-    func onImageGenerated(imageId: String) {
-        Task {
-            await viewImageUseCase.execute(imageId: imageId, presenter: self)
-        }
-    }
-    
-    func onError(error: any Error) {
-        fetchPhase = .failure(error.localizedDescription)
-    }
-}
-
-extension ContentView: ViewImagePresenter {
-    func isLoadingImage() {
-        fetchPhase = .loading
-    }
-    
-    func onImageLoaded(image: Data) {
-        guard let image = UIImage(data: image) else {
-            self.fetchPhase = .failure("Failed to download image")
-            return
-        }
-        self.fetchPhase = .success(Image(uiImage: image))
     }
 }
 
